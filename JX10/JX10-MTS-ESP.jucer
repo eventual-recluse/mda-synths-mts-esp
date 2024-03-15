@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="lUYjpz" name="JX10" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="lUYjpz" name="JX10-MTS-ESP" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
-  <MAINGROUP id="w6zN8D" name="JX10">
+  <MAINGROUP id="w6zN8D" name="JX10-MTS-ESP">
     <GROUP id="{6710DCDA-6646-EE06-8F56-CF4D30A75DF8}" name="Source">
       <FILE id="FyCcCe" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
