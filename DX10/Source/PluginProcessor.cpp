@@ -14,17 +14,21 @@ DX10Program::DX10Program(const char *name,
 }
 
 DX10AudioProcessor::DX10AudioProcessor()
-    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true))
+    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+      mtsClientPtr(nullptr)
 {
     _sampleRate = 44100.0f;
     _inverseSampleRate = 1.0f / _sampleRate;
 
     createPrograms();
     setCurrentProgram(0);
+
+    mtsClientPtr = MTS_RegisterClient();
 }
 
 DX10AudioProcessor::~DX10AudioProcessor()
 {
+    MTS_DeregisterClient(mtsClientPtr);
 }
 
 const juce::String DX10AudioProcessor::getName() const
@@ -554,6 +558,9 @@ void DX10AudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::Mi
 
 void DX10AudioProcessor::noteOn(int note, int velocity)
 {
+    // Check MTS client is registered
+    if (!mtsClientPtr) return;
+    
     if (velocity > 0) {
         // Find quietest voice. Voices that are not playing have env = 0.
         float l = 1.0f;
@@ -583,6 +590,11 @@ void DX10AudioProcessor::noteOn(int note, int velocity)
         float p = std::exp(0.05776226505f * (float(note) + _fineTune));
 
         _voices[vl].note = note;
+
+        // MTS-ESP microtuning
+        int midichannel = -1;
+        double retune_ratio = MTS_RetuningAsRatio(mtsClientPtr, midinote, midichannel);
+        p = retune_ratio * p;
 
         // Reset the carrier oscillator phase and calculate its phase increment.
         // Also apply pitch bending here already rather than during rendering,
