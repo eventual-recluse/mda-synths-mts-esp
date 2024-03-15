@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "libMTSClient.cpp"
 
 const int NPARAMS = 24;       // number of parameters
 const int NVOICES = 8;        // max polyphony
@@ -100,7 +101,7 @@ public:
     void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
 
     juce::AudioProcessorEditor *createEditor() override;
-    bool hasEditor() const override { return true; }
+    bool hasEditor() const override { return false; }
 
     const juce::String getName() const override;
 
@@ -269,6 +270,9 @@ private:
 
     // Pitch bend value, and its inverse. Also used to modulate the filter.
     float _pitchBend, _inversePitchBend;
+
+    // MTS-ESP microtuning client pointer
+    MTSClient *mtsClientPtr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JX10AudioProcessor)
 };
