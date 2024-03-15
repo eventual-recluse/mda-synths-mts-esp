@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "libMTSClient.cpp"
 
 const int NPARAMS = 16;       // number of parameters
 const int NVOICES = 8;        // max polyphony
@@ -179,6 +180,9 @@ private:
 
     // Pitch bend value.
     float _pitchBend;
+
+    // MTS-ESP microtuning client pointer
+    MTSClient *mtsClientPtr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DX10AudioProcessor)
 };
