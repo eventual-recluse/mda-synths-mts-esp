@@ -1,3 +1,15 @@
+# MDA JX10 analog synth and DX10 FM synth in JUCE with basic MTS-ESP microtuning support
+These plugins were adapted from the JUCE conversions of the JX10 and DX10 plugins by Matthijs Hollemans: [https://github.com/hollance/mda-plugins-juce/](https://github.com/hollance/mda-plugins-juce/). The plugins were originally written by Paul Kellett.
+
+Basic [MTS-ESP microtuning](https://oddsound.com/usingmtsesp.php) support has been added to these two plugins. See [https://oddsound.com/usingmtsesp.php](https://oddsound.com/usingmtsesp.php) for more information about MTS-ESP.
+
+## Building the plugins
+
+Before building, the Source directories of each plugin must contain both libMTSClient.cpp and libMTSClient.h, which are available from the Client folder of the [ODDSound MTS-ESP library](https://github.com/ODDSound/MTS-ESP/tree/main/Client). The plugins can then be built with the Projucer from JUCE. The ODDSound MTS-ESP library can be found at [https://github.com/ODDSound/MTS-ESP/](https://github.com/ODDSound/MTS-ESP/).
+
+
+Further information from the original README follows:
+
 # MDA plug-ins in JUCE
 
 This repo contains the [MDA freeware plug-ins](http://mda.smartelectronix.com) implemented in [JUCE](https://juce.com).
@@ -23,69 +35,9 @@ Some notes:
 
 This source code is licensed under the [MIT license](LICENSE.txt) but keep in mind that JUCE has its own licensing terms. JUCE conversion done by Matthijs Hollemans.
 
-## Where to start
-
-If you're new to audio programming and want to learn how these plug-ins work, start with one of the following easy plug-ins:
-
-- RingMod
-- Overdrive
-- Degrade
-- Delay
-
-If you're interested in synths, check out:
-
-- MDA Piano
-- MDA EPiano
-- JX10 analog synth
-- DX10 FM synth
-
 You can find an archived copy of the [original documentation here](https://web.archive.org/web/20211028012511/http://mda.smartelectronix.com/vst/help/mdaplugs.htm).
 
 > **Note:** The documentation of the parameters was taken from the original website but is not always complete or correct.
-
-## Included plug-ins
-
-- [Ambience](Ambience/): Small space reverberator
-- [Bandisto](Bandisto/): Multi-band distortion
-- [Degrade](Degrade/): Low-quality digital sampling
-- [Delay](Delay/): Simple stereo delay with feedback tone control
-- [Detune](Detune/): Simple up/down pitch shifting thickener
-- [DX10](DX10/): Simple FM synthesizer
-- [Dynamics](Dynamics/): Compressor / Limiter / Gate
-- [Envelope](Envelope/): Envelope follower and VCA
-- [EPiano](EPiano/): Rhodes piano
-- [Image](Image/): Stereo image adjustment and M-S matrix
-- [JX10](JX10/): 2-oscillator analog synthesizer
-- [Limiter](Limiter/): Opto-electronic style limiter
-- [Loudness](Loudness/): Equal loudness contours for bass EQ and mix correction
-- [Overdrive](Overdrive/): Soft distortion plug-in
-- [Piano](Piano/): Acoustic piano instrument
-- [RezFilter](RezFilter/): Resonant filter with LFO and envelope follower
-- [RingMod](RingMod/): Simple ring modulator
-- [Shepard](Shepard/): Shepard tone generator
-- [Stereo](Stereo/): Add artificial width to a mono signal
-- [SubSynth](SubSynth/): Several low frequency enhancement methods
-- [TestTone](TestTone/): Signal generator with pink and white noise, impulses and sweeps
-
-## Plug-ins that have not been converted yet
-
-- BeatBox - Drum replacer
-- Combo - Amp & speaker simulator
-- De-ess - High frequency dynamics processor
-- Dither - Range of dither types including noise shaping
-- DubDelay - Delay with feedback saturation and time/pitch modulation
-- Leslie - Rotary speaker simulator
-- Looplex - ?
-- Multiband - Multi-band compressor with M-S processing modes
-- Re-Psycho! - Drum loop pitch changer
-- Round Panner - 3D panner
-- SpecMeter
-- Splitter - Frequency / level crossover for setting up dynamic processing
-- Talkbox - High resolution vocoder
-- Thru-Zero Flanger - Classic tape-flanging simulation
-- Tracker - Pitch tracking oscillator, or pitch tracking EQ
-- Vocoder - Switchable 8 or 16 band vocoder
-- VocInput - Pitch tracking oscillator for generating vocoder carrier input
 
 ## How the code is structured
 
