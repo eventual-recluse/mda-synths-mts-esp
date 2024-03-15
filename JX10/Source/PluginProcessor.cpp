@@ -48,17 +48,21 @@ JX10Program::JX10Program(const char *name,
 }
 
 JX10AudioProcessor::JX10AudioProcessor()
-    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true))
+    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+      mtsClientPtr(nullptr)
 {
     _sampleRate = 44100.0f;
     _inverseSampleRate = 1.0f / _sampleRate;
 
     createPrograms();
     setCurrentProgram(0);
+
+    mtsClientPtr = MTS_RegisterClient();
 }
 
 JX10AudioProcessor::~JX10AudioProcessor()
 {
+    MTS_DeregisterClient(mtsClientPtr);
 }
 
 const juce::String JX10AudioProcessor::getName() const
@@ -919,6 +923,9 @@ void JX10AudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::Mi
 
 void JX10AudioProcessor::noteOn(int note, int velocity)
 {
+    // Check MTS client is registered
+    if (!mtsClientPtr) return;
+    
     if (velocity > 0) {  // note on
         if (_ignoreVelocity) { velocity = 80; }
 
@@ -945,6 +952,12 @@ void JX10AudioProcessor::noteOn(int note, int velocity)
 
                 // Calculate the oscillator period. These formulas are explained below.
                 float p = _tune * std::exp(-0.05776226505f * (float(note) + ANALOG * float(v)));
+
+                // MTS-ESP microtuning
+                int midichannel = -1;
+                double retune_ratio = MTS_RetuningAsRatio(mtsClientPtr, note, midichannel);
+                p = (1.0 / retune_ratio) * p;
+                
                 while (p < 3.0f || (p * _detune) < 3.0f) { p += p; }
                 _voices[v].target = p;
 
@@ -1039,6 +1052,11 @@ void JX10AudioProcessor::noteOn(int note, int velocity)
           voice number. For moar analog!
          */
         float p = _tune * std::exp(-0.05776226505f * (float(note) + ANALOG * float(v)));
+
+        // MTS-ESP microtuning
+        int midichannel = -1;
+        double retune_ratio = MTS_RetuningAsRatio(mtsClientPtr, note, midichannel);
+        p = (1.0 / retune_ratio) * p;
 
         // Make sure the period does not become too small. This lowers the pitch an
         // octave at a time until `p` is at least 3 samples long. It seems likely
