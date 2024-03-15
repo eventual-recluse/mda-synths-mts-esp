@@ -593,7 +593,7 @@ void DX10AudioProcessor::noteOn(int note, int velocity)
 
         // MTS-ESP microtuning
         int midichannel = -1;
-        double retune_ratio = MTS_RetuningAsRatio(mtsClientPtr, midinote, midichannel);
+        double retune_ratio = MTS_RetuningAsRatio(mtsClientPtr, note, midichannel);
         p = retune_ratio * p;
 
         // Reset the carrier oscillator phase and calculate its phase increment.
